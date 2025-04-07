@@ -4,7 +4,6 @@ from .controllers import auth_controller, post_controller
 from .database import engine
 from .models import base
 
-# Create database tables
 base.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -13,7 +12,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,7 +20,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
 app.include_router(auth_controller.router)
 app.include_router(post_controller.router)
 

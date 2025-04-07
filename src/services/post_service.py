@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 class PostService:
     """Service layer for post-related operations."""
     
-    # Cache for posts with 5-minute TTL
     _posts_cache = TTLCache(maxsize=100, ttl=300)
 
     @staticmethod
@@ -28,15 +27,12 @@ class PostService:
         """Get all posts for a user with caching."""
         cache_key = f"user_posts_{user_id}"
         
-        # Try to get from cache first
         cached_posts = PostService._posts_cache.get(cache_key)
         if cached_posts is not None:
             return cached_posts
 
-        # If not in cache, fetch from database
         posts = db.query(Post).filter(Post.user_id == user_id).all()
         
-        # Store in cache
         PostService._posts_cache[cache_key] = posts
         return posts
 
@@ -57,7 +53,6 @@ class PostService:
         db.delete(post)
         db.commit()
         
-        # Invalidate cache for this user's posts
         cache_key = f"user_posts_{user_id}"
         PostService._posts_cache.pop(cache_key, None)
         

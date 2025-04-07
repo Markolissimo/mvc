@@ -3,6 +3,9 @@ import time
 import sys
 
 def check_db():
+    """
+    Check if the database is ready to accept connections.
+    """
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)

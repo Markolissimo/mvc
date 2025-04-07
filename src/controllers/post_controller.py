@@ -15,7 +15,6 @@ async def create_post(
     user_id: int = Depends(get_current_user)
 ):
     """Create a new post."""
-    # Validate payload size (1MB limit)
     if len(post.text.encode('utf-8')) > 1024 * 1024:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
